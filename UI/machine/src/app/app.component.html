@@ -1,0 +1,93 @@
+<div class="container">   
+  <h1>Machine App</h1>
+  <div class="message" [ngClass]="{'success': isSuccess, 'error': isError}" *ngIf="message">
+    {{ message }}
+  </div>
+  <div class="cards-container">
+
+      <div class="card-forms">
+      <form #form="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="machineId">Machine ID</label> 
+          <input type="text" name="machineId" [(ngModel)] = "machine.id" [readonly]="isEditMode" required  #machineId="ngModel"
+          [ngClass]="{ 'error-required': machineId.invalid && machineId.touched }"
+          (click)="clearSelectedMachineDetails()">
+          <div *ngIf="form.controls['machineId'].invalid && form.controls['machineId'].touched" class="error-message">
+            Machine ID field is required.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="machineName">Machine Name</label>
+          <input type="text" name="machineName" [(ngModel)] = "machine.name" required #machineName="ngModel"
+          [ngClass]="{ 'error-required': machineName.invalid && machineName.touched }"
+          (click)="clearSelectedMachineDetails()">
+          <div *ngIf="form.controls['machineName'].invalid && form.controls['machineName'].touched" class="error-message">
+          Machine Name field is required.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="createdOn">Created On</label>
+          <input type="datetime-local" id="createdOn" name="createdOn" [(ngModel)]="machine.createdOn" (click)="clearSelectedMachineDetails()" placeholder="{{machine.id}}">
+        </div>
+        <div class="form-group">
+          <label for="updatedOn">Updated On</label>
+          <input type="datetime-local" id="updatedOn" name="updatedOn" [(ngModel)]="machine.updatedOn" (click)="clearSelectedMachineDetails()">
+        </div>
+        <div class="form-group">
+          <button [disabled]="form.invalid">Submit</button>
+        </div>
+      </form>
+      </div>
+  
+      <div class="cards-grid">
+        <table class="machine-table">
+          <thead>
+            <tr class="table-heading">
+              <th>Machine ID</th>
+              <th>Machine Name</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let machine of machines" (click)="getMachineById(machine.id)">
+              <td><span>{{ machine.id }}</span></td>
+              <td><span>{{ machine.name }}</span></td>
+              <td><a (click)="deleteMachine(machine.id, $event)"><i class="fas fa-trash"></i></a>&nbsp;
+              <a (click)="populateForm(machine, $event)"><i class='fas fa-edit'></i></a></td>
+            </tr>
+          </tbody>
+        </table>
+      &nbsp;
+  <div class="card-body machine-details" *ngIf="selectedMachine" #detailsContainer>
+    <h2 class="section-title">{{selectedMachine.name}} Details</h2>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="machine-info">
+          <div class="info-row">
+            <div class="info-label">ID:</div>
+            <div class="info-value">{{ selectedMachine.id }}</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Name:</div>
+            <div class="info-value">{{ selectedMachine.name }}</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Created On:</div>
+            <div class="info-value">{{ selectedMachine.createdOn }}</div>
+          </div>
+          <div class="info-row">
+            <div class="info-label">Updated On:</div>
+            <div class="info-value">{{ selectedMachine.updatedOn }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
+
+  </div>
+</div>
+
+<!-- <div class='container'>
+      <router-outlet></router-outlet>
+    </div> -->
